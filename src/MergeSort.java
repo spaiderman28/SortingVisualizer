@@ -38,10 +38,25 @@ public class MergeSort implements SortAlgorithm {
     @Override
     public String getName() { return "Merge Sort"; }
 
+    private void merge(SortArray arr, Item[] temp, int lo, int mid, int hi) {
+        //copy both piles into temp
+        for(int k = lo;k<=hi;k++){
+            temp[k]=arr.get(k);
+        }
+        int i =lo; //start of pile 1
+        int j = mid+1; //start of pile 2
+        for(int k = lo; k<= hi; k++){
+        //left pile is at temp[i] and right is at temp[j]
+        //move the correct card from temp to each spot
+            if(i>mid){ //pile 1 is empty
+                arr.set(k,temp[i++]);
+            }
+        }
+    }
 
     @Override
     public void sort(SortArray arr) {
-        // TODO: write merge sort here (add helper methods below)
+
 
     }
 }
