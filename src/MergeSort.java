@@ -40,23 +40,52 @@ public class MergeSort implements SortAlgorithm {
 
     private void merge(SortArray arr, Item[] temp, int lo, int mid, int hi) {
         //copy both piles into temp
-        for(int k = lo;k<=hi;k++){
+        for(int k = lo; k<=hi; ++k){
             temp[k]=arr.get(k);
         }
-        int i =lo; //start of pile 1
-        int j = mid+1; //start of pile 2
-        for(int k = lo; k<= hi; k++){
-        //left pile is at temp[i] and right is at temp[j]
-        //move the correct card from temp to each spot
-            if(i>mid){ //pile 1 is empty
-                arr.set(k,temp[i++]);
+        int i = lo, j = mid+1, k = lo;
+        while (i < mid+1 && j <= hi) {
+            if (!arr.less(temp[j], temp[i])) {
+                arr.set(k, temp[i]);
+                i++;
+            } else {
+                arr.set(k, temp[j]);
+                j++;
+            }
+            ++k;
+        }
+
+        if (i < mid+1) {
+            for (int c = i; c <= mid; ++c) {
+                arr.set(k, temp[c]);
+                ++k;
+            }
+        } 
+        else {
+            for (int c = j; c <= hi; ++c) {
+                arr.set(k, temp[c]);
+                ++k;
             }
         }
     }
 
     @Override
     public void sort(SortArray arr) {
+        if (arr.size() <= 1) return;
 
+        Item[] temp = new Item[arr.size()];
+        mergeSort(arr, temp, 0, arr.size() - 1);
+    }
 
+    private void mergeSort(SortArray arr, Item[] temp, int lo, int hi) {
+        if (lo >= hi) return;
+
+        int mid = lo + (hi - lo) / 2;
+
+        mergeSort(arr, temp, lo, mid);
+
+        mergeSort(arr, temp, mid + 1, hi);
+
+        merge(arr, temp, lo, mid, hi);
     }
 }
